@@ -1,13 +1,16 @@
 import { useEffect, useRef, useState } from 'react'
 import { contact, footer } from '../content'
-import { usePrefersReducedMotion } from '../lib/motion'
-import { BarsMark } from './LogoMark'
+import { gsap, usePrefersReducedMotion } from '../lib/motion'
+import { BarsIcon } from './Logo'
 import { Magnetic } from './Magnetic'
-import { Reveal } from './Reveal'
 
 const CHARS = 'abcdefghijklmnopqrstuvwxyz0123456789'
 
-/** Giant mailto link that scrambles/decodes on hover. Static under reduced motion. */
+/**
+ * Giant mono mailto link: text scrambles/decodes on hover, a green underline
+ * draws in (.draw-link-accent), and the whole link is magnetic. Static under
+ * reduced motion.
+ */
 function ScrambleEmail({ email }: { email: string }) {
   const reduced = usePrefersReducedMotion()
   const [display, setDisplay] = useState(email)
@@ -21,14 +24,13 @@ function ScrambleEmail({ email }: { email: string }) {
     window.clearInterval(timer.current)
     timer.current = window.setInterval(() => {
       frame += 1
-      const resolved = frame // one character locks in per tick, left to right
       setDisplay(
         email
           .split('')
-          .map((c, i) => (i < resolved || c === '@' || c === '.' ? c : CHARS[Math.floor(Math.random() * CHARS.length)]))
+          .map((c, i) => (i < frame || c === '@' || c === '.' ? c : CHARS[Math.floor(Math.random() * CHARS.length)]))
           .join(''),
       )
-      if (resolved >= email.length) window.clearInterval(timer.current)
+      if (frame >= email.length) window.clearInterval(timer.current)
     }, 40)
   }
   const stop = () => {
@@ -45,7 +47,7 @@ function ScrambleEmail({ email }: { email: string }) {
         onMouseLeave={stop}
         onFocus={start}
         onBlur={stop}
-        className="nav-link cursor-pointer font-mono text-[clamp(1.35rem,4.5vw,3.75rem)] tracking-tight text-ink"
+        className="draw-link draw-link-accent cursor-pointer font-mono text-[clamp(1.3rem,4.5vw,3.75rem)] tracking-tight text-ink"
       >
         <span aria-hidden="true">{display}</span>
       </a>
@@ -55,35 +57,44 @@ function ScrambleEmail({ email }: { email: string }) {
 
 /** Contact + minimal footer — the closing moment. */
 export function Contact() {
+  const reduced = usePrefersReducedMotion()
+  const root = useRef<HTMLElement>(null)
+
+  useEffect(() => {
+    if (reduced) return
+    const ctx = gsap.context(() => {
+      gsap
+        .timeline({ scrollTrigger: { trigger: root.current, start: 'top 70%', once: true } })
+        .from('.contact-in', { autoAlpha: 0, y: 34, duration: 0.9, stagger: 0.12, ease: 'power4.out' })
+    }, root)
+    return () => ctx.revert()
+  }, [reduced])
+
   return (
-    <section id="contact" className="relative overflow-hidden">
-      <div className="mx-auto w-full max-w-[1280px] px-6 pb-24 pt-32 md:px-8 md:pb-32 md:pt-44 lg:px-12">
-        <Reveal>
-          <p className="label-mono text-ink-muted">
-            <span aria-hidden="true">{'// '}</span>
-            {contact.label}
-          </p>
-        </Reveal>
-        <Reveal delay={0.08}>
-          <h2 className="mt-8 font-display text-[clamp(3.25rem,13vw,12rem)] font-extrabold leading-[0.95] tracking-[-0.03em] text-ink">
-            {contact.headline}
-          </h2>
-        </Reveal>
-        <Reveal delay={0.2} className="mt-14 md:mt-20">
+    <section ref={root} id="contact">
+      <div className="mx-auto w-full max-w-[1320px] px-6 pb-28 pt-36 md:px-10 md:pb-36 md:pt-48">
+        <p className="contact-in label-mono text-ink/60">
+          <span aria-hidden="true">{'// '}</span>
+          {contact.eyebrow}
+        </p>
+        <h2 className="contact-in mt-8 font-display text-[clamp(3.25rem,13vw,12rem)] font-extrabold leading-[0.95] tracking-[-0.03em] text-ink">
+          {contact.headline}
+        </h2>
+        <div className="contact-in mt-14 md:mt-20">
           <ScrambleEmail email={contact.email} />
-        </Reveal>
+        </div>
       </div>
 
-      <footer className="border-t border-hairline">
-        <div className="mx-auto flex w-full max-w-[1280px] flex-col gap-6 px-6 py-10 sm:flex-row sm:items-center sm:justify-between md:px-8 lg:px-12">
-          <BarsMark className="h-5 w-auto text-ink" />
-          <p className="font-mono text-xs text-ink-muted/70">{footer.legal}</p>
-          <nav aria-label="Social" className="flex items-center gap-7">
+      <footer className="border-t border-line">
+        <div className="mx-auto flex w-full max-w-[1320px] flex-col gap-6 px-6 py-10 sm:flex-row sm:items-center sm:justify-between md:px-10">
+          <BarsIcon className="h-5 w-auto" />
+          <p className="font-mono text-xs text-ink/50">{footer.legal}</p>
+          <nav aria-label="Social" className="flex items-center gap-8">
             {footer.links.map((l) => (
               <a
                 key={l.label}
                 href={l.href}
-                className="nav-link label-mono cursor-pointer text-ink-muted transition-colors duration-200 hover:text-ink"
+                className="draw-link label-mono cursor-pointer text-ink/60 transition-colors duration-200 hover:text-ink"
               >
                 {l.label}
               </a>

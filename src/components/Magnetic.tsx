@@ -2,10 +2,8 @@ import { useEffect, useRef, type ReactNode } from 'react'
 import { gsap, usePrefersReducedMotion } from '../lib/motion'
 
 /**
- * Magnetic hover wrapper — used on exactly one focal CTA (skill rule:
- * 1–2 magnetic elements max). Pull is clamped to 0.3× the cursor offset so
- * the element never leaves its hit box. Pointer-fine devices only; inert
- * under reduced motion.
+ * Magnetic hover — the element leans toward the cursor, clamped so it never
+ * leaves its hit box. Pointer-fine devices only; inert under reduced motion.
  */
 export function Magnetic({ children }: { children: ReactNode }) {
   const reduced = usePrefersReducedMotion()
@@ -17,11 +15,10 @@ export function Magnetic({ children }: { children: ReactNode }) {
 
     const xTo = gsap.quickTo(el, 'x', { duration: 0.4, ease: 'power3.out' })
     const yTo = gsap.quickTo(el, 'y', { duration: 0.4, ease: 'power3.out' })
-
     const move = (e: MouseEvent) => {
       const r = el.getBoundingClientRect()
-      xTo((e.clientX - r.left - r.width / 2) * 0.3)
-      yTo((e.clientY - r.top - r.height / 2) * 0.3)
+      xTo((e.clientX - r.left - r.width / 2) * 0.25)
+      yTo((e.clientY - r.top - r.height / 2) * 0.25)
     }
     const leave = () => {
       xTo(0)

@@ -1,9 +1,9 @@
 # E71 — Presence Site
 
-Single-page portfolio/brochure site for E71, an AI company from the UAE.
-Not a product site — six choreographed moments, under 150 words of copy,
-95% monochrome with micro-accents. Reference standard: Awwwards/CSSDA
-"animated" gallery winners.
+Single-page brochure site for E71, an AI company from the UAE. Seven
+choreographed moments, every scroll animation scrubbed to scroll position,
+under 200 words of copy. Reference standard: Awwwards / CSSDA animated
+site-of-the-day winners.
 
 ## Run it
 
@@ -18,37 +18,37 @@ npm run preview   # serve the production build
 
 - React 19 + Vite + TypeScript
 - Tailwind CSS v4 (tokens in `src/index.css` `@theme`)
-- GSAP + ScrollTrigger — pinned, scroll-scrubbed choreography
-- Lenis — smooth inertial scrolling (wired into GSAP's ticker)
-- Motion (`motion/react`) — micro-interactions and reveals
+- GSAP + ScrollTrigger — every scroll animation uses `scrub: true`
+- Lenis — smooth inertial scrolling, velocity feeds the marquee
 
-## The six moments
+## The seven moments
 
-1. **Preloader** — three logo bars wipe in diagonally (red, green, white), diagonal clip reveal, ≈1.4s
-2. **Hero** — massive Archivo headline, masked word stagger, green underline draws last, giant ghost "71" parallaxes slower than content
-3. **Marquee** — slow infinite mono strip (the seven emirates)
-4. **About** — pinned manifesto; statements swap on scroll, key words reveal with the diagonal wipe
-5. **Quote** — full-viewport Sheikh Zayed quote, words scrubbed to scroll, green rule + mono attribution land last
-6. **Contact** — enormous "Let's talk.", scramble-decode mailto link, minimal footer
+1. **Preloader** — three bars wipe in diagonally (red, green, white), diagonal clip exit, <1.5s
+2. **Hero** — masked word rise, green underline last, 40vw ghost "71" parallaxing slower than content (scrubbed), pulsing red dot + location, scroll hint
+3. **Marquee** — infinite mono strip whose speed rises with live scroll velocity
+4. **Capabilities** — pinned horizontal scroll through four panels (scrubbed), green progress bar, diagonal-wipe statements; stacks vertically below 768px
+5. **About** — manifesto words light up from dim gray to off-white one by one, scrubbed
+6. **Quote** — full-viewport Sheikh Zayed quote, words fade 8%→100% scrubbed, green rule + mono attribution last (Arabic slot renders only if supplied in `content.ts`)
+7. **Contact** — enormous "Let's talk.", scramble-decode magnetic mailto with green underline, minimal footer
+
+Plus: thin green top scroll-progress bar, custom dot cursor (desktop only),
+film-grain overlay, draw-in link underlines.
 
 ## Where things live
 
 | Path | What |
 |------|------|
-| `src/content.ts` | **Every word on the site** (< 150 total) — edit here only |
-| `src/index.css` | Brand tokens (colors, fonts, cursor, marquee) |
-| `design-system/MASTER.md` | Design-system source of truth |
-| `src/components/LogoMark.tsx` | Inline-SVG logo stand-in — swap in provided SVG files as-is |
-| `src/lib/motion.ts` | GSAP setup + `usePrefersReducedMotion` |
+| `src/content.ts` | **Every word on the site** — edit here only |
+| `src/index.css` | Tokens (colors, fonts, ghost/label utilities, cursor) |
+| `src/components/Logo.tsx` | Inline-SVG logo stand-in — swap in provided SVG files as-is |
+| `src/lib/motion.ts` | GSAP setup, diagonal-wipe constants, reduced-motion hook |
+| `src/lib/LenisProvider.tsx` | Lenis ↔ GSAP wiring + scroll-velocity feed |
 
-## Notes
+## Rules encoded in the build
 
-- The meaning of the name is never explained anywhere on the site — keep it that way.
-- Color discipline: max 3 small color moments per viewport (logo bars, one green
-  underline, one red live dot). No green/red surfaces or button fills, ever.
-- The Arabic line of the quote renders only if supplied in `content.ts`
-  (`quote.arabic`) — never generate it.
-- Every animation (preloader, pins, scrubs, cursor, marquee, scramble, Lenis)
-  gates on `prefers-reduced-motion`; reduced users get a fully static page.
-- Custom cursor is desktop-only (`pointer: fine`), hidden until first mousemove.
+- 95% monochrome; red/green are micro-accents only (logo bars, red live dot,
+  one green underline, green progress bars, hover states). No color surfaces.
+- The name is never explained anywhere — keep it that way.
+- Never generate Arabic text; `quote.arabic` renders only if you supply it.
+- Every animation gates on `prefers-reduced-motion` (static page, native scroll).
 - Verified at 375 / 768 / 1440; horizontal viewport scroll is locked.

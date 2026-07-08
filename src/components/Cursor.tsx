@@ -2,9 +2,9 @@ import { useEffect, useRef } from 'react'
 import { gsap, usePrefersReducedMotion } from '../lib/motion'
 
 /**
- * Minimal custom cursor — a small dot that trails the pointer and expands
- * over links. Desktop (pointer: fine) only; never rendered under reduced
- * motion, in which case the native cursor is left untouched.
+ * Minimal custom cursor — a small dot trailing the pointer, expanding over
+ * links. Desktop (pointer: fine) only, never under reduced motion, and
+ * invisible until the pointer's real position is known.
  */
 export function Cursor() {
   const reduced = usePrefersReducedMotion()
@@ -15,21 +15,20 @@ export function Cursor() {
     if (!el || reduced || !window.matchMedia('(pointer: fine)').matches) return
 
     document.documentElement.classList.add('custom-cursor')
-    const xTo = gsap.quickTo(el, 'x', { duration: 0.22, ease: 'power3.out' })
-    const yTo = gsap.quickTo(el, 'y', { duration: 0.22, ease: 'power3.out' })
+    const xTo = gsap.quickTo(el, 'x', { duration: 0.2, ease: 'power3.out' })
+    const yTo = gsap.quickTo(el, 'y', { duration: 0.2, ease: 'power3.out' })
 
     const move = (e: MouseEvent) => {
-      // stay invisible until the pointer's real position is known
       gsap.set(el, { autoAlpha: 1 })
       xTo(e.clientX)
       yTo(e.clientY)
     }
-    const isTarget = (e: Event) => (e.target as Element | null)?.closest?.('a, button')
+    const overLink = (e: Event) => (e.target as Element | null)?.closest?.('a, button')
     const over = (e: MouseEvent) => {
-      if (isTarget(e)) gsap.to(el, { scale: 3, duration: 0.3, ease: 'power3.out' })
+      if (overLink(e)) gsap.to(el, { scale: 3.2, duration: 0.3, ease: 'power3.out' })
     }
     const out = (e: MouseEvent) => {
-      if (isTarget(e)) gsap.to(el, { scale: 1, duration: 0.3, ease: 'power3.out' })
+      if (overLink(e)) gsap.to(el, { scale: 1, duration: 0.3, ease: 'power3.out' })
     }
     window.addEventListener('mousemove', move, { passive: true })
     window.addEventListener('mouseover', over)
@@ -48,7 +47,7 @@ export function Cursor() {
     <div
       ref={ref}
       aria-hidden="true"
-      className="pointer-events-none invisible fixed left-0 top-0 z-[90] hidden h-3 w-3 -translate-x-1/2 -translate-y-1/2 rounded-full bg-ink opacity-0 mix-blend-difference md:block"
+      className="pointer-events-none invisible fixed left-0 top-0 z-[90] hidden h-2.5 w-2.5 -translate-x-1/2 -translate-y-1/2 rounded-full bg-ink opacity-0 mix-blend-difference md:block"
     />
   )
 }

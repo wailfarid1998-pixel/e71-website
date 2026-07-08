@@ -1,12 +1,7 @@
 /**
- * Every word on the site lives here (< 150 words total).
- * Swap strings freely — components render whatever they find.
- *
- * Headline word flags: `u` = the viewport's single green-underlined word,
- * `g` = outlined "ghost" type (transparent fill, gray stroke).
+ * Every word on the site lives here (< 200 words total).
+ * Edit strings freely — components render whatever they find.
  */
-
-export type HWord = { t: string; u?: boolean; g?: boolean }
 
 export const site = {
   name: 'E71',
@@ -17,49 +12,77 @@ export const site = {
 
 export const nav = {
   links: [
-    { label: 'About', href: '#about', accent: true },
+    { label: 'Work', href: '#work' },
+    { label: 'About', href: '#about' },
     { label: 'Contact', href: '#contact' },
   ],
 }
 
 export const hero = {
-  label: 'E71 — Artificial Intelligence',
-  headline: [
+  eyebrow: 'Artificial intelligence',
+  // words rise from masked lines; `u` marks the single green-underlined word
+  lines: [
     [{ t: 'Intelligence,' }],
     [{ t: 'engineered in' }],
     [{ t: 'the' }, { t: 'Emirates.', u: true }],
-  ] as HWord[][],
-  caption: 'Abu Dhabi, UAE',
+  ],
+  location: 'Abu Dhabi, UAE',
+  scrollHint: 'Scroll',
 }
 
 export const marquee = {
-  items: [
-    'E71',
-    'Artificial intelligence',
-    'Abu Dhabi · Dubai · Sharjah · Ajman · Umm Al Quwain · Ras Al Khaimah · Fujairah',
+  text: 'E71 — Artificial intelligence — Abu Dhabi · Dubai · Sharjah · Ajman · Umm Al Quwain · Ras Al Khaimah · Fujairah — ',
+}
+
+export const capabilities = {
+  eyebrow: 'What we build',
+  heading: 'Intelligence, applied.',
+  panels: [
+    {
+      num: '01',
+      label: 'Automate',
+      statement: 'Workflows that run themselves.',
+      body: 'Manual processes become autonomous systems — approvals, routing, reporting, done before the morning meeting.',
+    },
+    {
+      num: '02',
+      label: 'Analyze',
+      statement: 'A thousand pages, in seconds.',
+      body: 'Contracts, reports, research, archives — read, understood, and answered instantly.',
+    },
+    {
+      num: '03',
+      label: 'Accelerate',
+      statement: 'Weeks of work, in minutes.',
+      body: 'The slowest step in your operation becomes the fastest.',
+    },
+    {
+      num: '04',
+      label: 'Adapt',
+      statement: 'Your AI. Your walls. Your data.',
+      body: 'Intelligence trained on your operations, deployed inside your infrastructure — private by design, sovereign by default.',
+    },
   ],
 }
 
-// Pinned manifesto — statements swap as you scroll; `key` gets the diagonal wipe.
 export const manifesto = {
-  label: 'About',
+  eyebrow: 'About',
   statements: [
-    { pre: 'We build', key: 'sovereign', post: 'intelligence.' },
-    { pre: 'Rooted here,', key: 'fluent', post: 'everywhere.' },
-    { pre: 'Serious systems,', key: 'quietly', post: 'deployed.' },
-    { pre: 'Built to keep', key: 'pace.', post: '' },
+    'We build artificial intelligence for the region — and for the world watching it.',
+    'Not tools. Working systems, inside governments and enterprises, from day one.',
+    'Built here. Owned here. Reaching everywhere.',
   ],
 }
 
 export const quote = {
-  text: 'I dreamt of our land keeping pace with the growth of the modern world.',
-  // Arabic line intentionally absent — supplied text only, never generated.
+  // Arabic renders above the English only if supplied — never generated here.
   arabic: '',
+  text: 'I dreamt of our land keeping pace with the growth of the modern world.',
   attribution: '— Sheikh Zayed bin Sultan Al Nahyan',
 }
 
 export const contact = {
-  label: 'Contact',
+  eyebrow: 'Contact',
   headline: "Let's talk.",
   email: 'info@e71.ai',
 }

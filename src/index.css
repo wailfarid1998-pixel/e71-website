@@ -2,16 +2,15 @@
 
 @theme {
   --color-base: #0a0b0a;
-  --color-surface: #101110;
-  --color-hairline: #2a2a27;
-  --color-steel: #4a4a44;
   --color-ink: #f4f4ef;
-  --color-ink-muted: #9aa097;
-  --color-accent: #00b368;
-  --color-live: #e4312b;
+  --color-line: #2a2a27; /* hairlines */
+  --color-steel: #4a4a44; /* structure, ghost strokes */
+  --color-dim: #3a3a35; /* manifesto words before they light up */
+  --color-accent: #00b368; /* green micro-accent */
+  --color-live: #e4312b; /* red micro-accent */
 
   --font-display: 'Archivo', ui-sans-serif, system-ui, sans-serif;
-  --font-sans: ui-sans-serif, system-ui, sans-serif;
+  --font-sans: 'Archivo', ui-sans-serif, system-ui, sans-serif;
   --font-mono: 'IBM Plex Mono', ui-monospace, monospace;
 
   --ease-out-expo: cubic-bezier(0.16, 1, 0.3, 1);
@@ -20,15 +19,14 @@
 html {
   background-color: var(--color-base);
   color-scheme: dark;
-  /* keep anchor targets clear of the fixed nav */
-  scroll-padding-top: 5rem;
-  /* forbid horizontal viewport scroll entirely (ghost numerals bleed off-edge) */
-  overflow-x: clip;
+  scroll-padding-top: 5rem; /* anchor targets clear the fixed nav */
+  overflow-x: clip; /* ghost numerals bleed off-edge; viewport never scrolls sideways */
 }
 
 body {
   @apply bg-base text-ink font-sans antialiased;
   font-size: 16px;
+  font-weight: 400;
   line-height: 1.6;
   overflow-x: clip;
 }
@@ -38,32 +36,32 @@ body {
   color: var(--color-base);
 }
 
-/* Visible focus for keyboard users — never removed, only styled */
+/* Keyboard focus is always visible */
 :focus-visible {
   outline: 2px solid var(--color-ink);
   outline-offset: 3px;
-  border-radius: 2px;
+  border-radius: 1px;
 }
 
-/* Technical label utility — mono, uppercase, tracked */
+/* Small technical labels — mono, uppercase, tracked */
 @utility label-mono {
   font-family: var(--font-mono);
-  font-size: 0.75rem;
-  letter-spacing: 0.14em;
+  font-size: 0.72rem;
+  letter-spacing: 0.16em;
   text-transform: uppercase;
 }
 
-/* Outlined "ghost" type — transparent fill, 1px gray stroke */
+/* Outlined ghost type — transparent fill, 1px gray stroke */
 @utility text-ghost {
   color: transparent;
   -webkit-text-stroke: 1px var(--color-steel);
 }
 
-/* Nav links: thin underline draws in on hover/focus */
-.nav-link {
+/* Links: a thin underline draws in on hover/focus */
+.draw-link {
   position: relative;
 }
-.nav-link::after {
+.draw-link::after {
   content: '';
   position: absolute;
   left: 0;
@@ -73,35 +71,26 @@ body {
   background: currentColor;
   transform: scaleX(0);
   transform-origin: left center;
-  transition: transform 0.3s var(--ease-out-expo);
+  transition: transform 0.35s var(--ease-out-expo);
 }
-.nav-link:hover::after,
-.nav-link:focus-visible::after {
+.draw-link:hover::after,
+.draw-link:focus-visible::after {
   transform: scaleX(1);
 }
-/* one nav item max carries the green underline */
-.nav-link-accent::after {
+/* the one green underline variant (email link) */
+.draw-link-accent::after {
   background: var(--color-accent);
+  height: 2px;
 }
 
-/* Infinite marquee strip (two identical halves inside the track) */
-.marquee-track {
-  animation: marquee 56s linear infinite;
-}
-@keyframes marquee {
-  to {
-    transform: translateX(-50%);
-  }
-}
-
-/* Custom cursor active (pointer: fine + motion allowed): hide the native one */
+/* Custom cursor active: hide the native one */
 html.custom-cursor,
 html.custom-cursor a,
 html.custom-cursor button {
   cursor: none;
 }
 
-/* Lenis recommendations */
+/* Lenis */
 html.lenis,
 html.lenis body {
   height: auto;

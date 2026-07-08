@@ -6,11 +6,17 @@ gsap.registerPlugin(ScrollTrigger)
 
 export { gsap, ScrollTrigger }
 
-export const REDUCED_MOTION_QUERY = '(prefers-reduced-motion: reduce)'
+/** Diagonal clip-path wipe — the logo's cut, used for every reveal. */
+export const WIPE_FROM = 'polygon(0% 0%, 0% 0%, -25% 100%, 0% 100%)'
+export const WIPE_TO = 'polygon(0% 0%, 125% 0%, 100% 100%, 0% 100%)'
 
-const mq = () => window.matchMedia(REDUCED_MOTION_QUERY)
+/** Live scroll velocity (px/s-ish), written by LenisProvider, read by Marquee. */
+export const scrollVelocity = { current: 0 }
 
-/** Live prefers-reduced-motion flag. Every animation in the site gates on this. */
+const QUERY = '(prefers-reduced-motion: reduce)'
+const mq = () => window.matchMedia(QUERY)
+
+/** Live prefers-reduced-motion flag — every animation gates on this. */
 export function usePrefersReducedMotion(): boolean {
   return useSyncExternalStore(
     (onChange) => {
@@ -22,9 +28,3 @@ export function usePrefersReducedMotion(): boolean {
     () => true,
   )
 }
-
-/** Shared easing/duration tokens so all motion has one rhythm. */
-export const EASE = {
-  out: 'expo.out',
-  micro: 'power2.out',
-} as const

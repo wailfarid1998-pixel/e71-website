@@ -1,89 +1,57 @@
 import { useEffect, useRef } from 'react'
 import { manifesto } from '../content'
 import { gsap, usePrefersReducedMotion } from '../lib/motion'
-import { Reveal } from './Reveal'
-
-const CLIP_FROM = 'polygon(0% 0%, 0% 0%, -25% 100%, 0% 100%)'
-const CLIP_TO = 'polygon(0% 0%, 125% 0%, 100% 100%, 0% 100%)'
 
 /**
- * About — a pinned, scroll-scrubbed manifesto. Statements swap as you
- * scroll; each key word reveals with the logo's diagonal wipe (outlined
- * ghost type). Falls back to a static stack on mobile / reduced motion.
+ * About — scroll-scrubbed manifesto. Each statement starts dim gray and its
+ * words light up to off-white one by one as it passes through the viewport,
+ * scrubbed to scroll. Static off-white under reduced motion.
  */
 export function Manifesto() {
   const reduced = usePrefersReducedMotion()
   const root = useRef<HTMLElement>(null)
 
   useEffect(() => {
-    const mm = gsap.matchMedia()
-    mm.add('(min-width: 768px) and (prefers-reduced-motion: no-preference)', () => {
-      const pinEl = root.current?.querySelector('.manifesto-pin')
-      const sts = gsap.utils.toArray<HTMLElement>('.manifesto-statement')
-      if (!pinEl || sts.length === 0) return
-
-      gsap.set(sts.slice(1), { autoAlpha: 0 })
-      const tl = gsap.timeline({
-        scrollTrigger: {
-          trigger: pinEl,
-          start: 'top top',
-          end: `+=${sts.length * 85}%`,
-          scrub: 1,
-          pin: true,
-          anticipatePin: 1,
-        },
-      })
-      tl.fromTo(
-        sts[0].querySelector('.manifesto-key'),
-        { clipPath: CLIP_FROM },
-        { clipPath: CLIP_TO, duration: 0.6, ease: 'none' },
-        0.05,
-      )
-      sts.forEach((st, i) => {
-        if (i === 0) return
-        tl.to(sts[i - 1], { autoAlpha: 0, y: -60, duration: 0.45, ease: 'power2.in' }, i)
-        tl.fromTo(st, { autoAlpha: 0, y: 60 }, { autoAlpha: 1, y: 0, duration: 0.45, ease: 'power2.out' }, i + 0.35)
-        tl.fromTo(
-          st.querySelector('.manifesto-key'),
-          { clipPath: CLIP_FROM },
-          { clipPath: CLIP_TO, duration: 0.45, ease: 'none' },
-          i + 0.6,
+    if (reduced) return
+    const ctx = gsap.context(() => {
+      gsap.utils.toArray<HTMLElement>('.manifesto-st').forEach((st) => {
+        gsap.fromTo(
+          st.querySelectorAll('.m-word'),
+          { color: '#3A3A35' },
+          {
+            color: '#F4F4EF',
+            stagger: 0.3,
+            ease: 'none',
+            scrollTrigger: { trigger: st, start: 'top 80%', end: 'top 28%', scrub: true },
+          },
         )
       })
-      tl.to({}, { duration: 0.6 }) // beat of stillness on the last statement
-    })
-    return () => mm.revert()
-  }, [])
-
-  const pinned = !reduced
+    }, root)
+    return () => ctx.revert()
+  }, [reduced])
 
   return (
-    <section ref={root} id="about">
-      <div className={pinned ? 'manifesto-pin flex min-h-screen flex-col justify-center overflow-hidden' : ''}>
-        <div className="mx-auto w-full max-w-[1280px] px-6 py-24 md:px-8 md:py-0 lg:px-12">
-          <Reveal>
-            <p className="label-mono text-ink-muted">
-              <span aria-hidden="true">{'// '}</span>
-              {manifesto.label}
-            </p>
-          </Reveal>
+    <section ref={root} id="about" className="mx-auto w-full max-w-[1320px] px-6 py-32 md:px-10 md:py-48">
+      <p className="label-mono text-ink/60">
+        <span aria-hidden="true">{'// '}</span>
+        {manifesto.eyebrow}
+      </p>
 
-          <div className={pinned ? 'relative mt-10 md:mt-12 md:h-[46vh]' : 'mt-10 space-y-16'}>
-            {manifesto.statements.map((s, i) => (
-              <p
-                key={i}
-                className={`manifesto-statement max-w-[16ch] font-display text-[clamp(2.4rem,6.5vw,6rem)] font-extrabold leading-[1.02] tracking-[-0.03em] text-ink ${
-                  pinned ? 'md:absolute md:inset-0 md:flex md:max-w-none md:items-center' : ''
-                }`}
-              >
-                <span className={pinned ? 'md:max-w-[18ch]' : ''}>
-                  {s.pre} <span className="manifesto-key inline-block text-ghost">{s.key}</span>
-                  {s.post ? <> {s.post}</> : null}
-                </span>
-              </p>
+      <div className="mt-16 space-y-28 md:mt-24 md:space-y-44">
+        {manifesto.statements.map((s, i) => (
+          <p
+            key={i}
+            className={`manifesto-st max-w-[22ch] font-display text-[clamp(2rem,5.5vw,4.75rem)] font-extrabold leading-[1.04] tracking-[-0.03em] ${
+              reduced ? 'text-ink' : 'text-dim'
+            } ${i === 1 ? 'md:ml-[16%]' : i === 2 ? 'md:ml-[8%]' : ''}`}
+          >
+            {s.split(' ').map((word, wi) => (
+              <span key={wi}>
+                <span className="m-word">{word}</span>{' '}
+              </span>
             ))}
-          </div>
-        </div>
+          </p>
+        ))}
       </div>
     </section>
   )
