@@ -2,14 +2,15 @@
 
 @theme {
   --color-base: #0a0b0a;
-  --color-surface: #16181a;
-  --color-hairline: #1e201e;
+  --color-surface: #101110;
+  --color-hairline: #2a2a27;
+  --color-steel: #4a4a44;
   --color-ink: #f4f4ef;
   --color-ink-muted: #9aa097;
   --color-accent: #00b368;
-  --color-live: #d8352a;
+  --color-live: #e4312b;
 
-  --font-display: 'Space Grotesk', ui-sans-serif, system-ui, sans-serif;
+  --font-display: 'Archivo', ui-sans-serif, system-ui, sans-serif;
   --font-sans: 'Inter', ui-sans-serif, system-ui, sans-serif;
   --font-mono: 'IBM Plex Mono', ui-monospace, monospace;
 
@@ -21,6 +22,8 @@ html {
   color-scheme: dark;
   /* keep anchor targets clear of the fixed nav */
   scroll-padding-top: 5rem;
+  /* forbid horizontal viewport scroll entirely (ghost numerals bleed off-edge) */
+  overflow-x: clip;
 }
 
 body {
@@ -31,13 +34,13 @@ body {
 }
 
 ::selection {
-  background: var(--color-accent);
+  background: var(--color-ink);
   color: var(--color-base);
 }
 
 /* Visible focus for keyboard users — never removed, only styled */
 :focus-visible {
-  outline: 2px solid var(--color-accent);
+  outline: 2px solid var(--color-ink);
   outline-offset: 3px;
   border-radius: 2px;
 }
@@ -48,6 +51,47 @@ body {
   font-size: 0.75rem;
   letter-spacing: 0.14em;
   text-transform: uppercase;
+}
+
+/* Outlined "ghost" type — transparent fill, 1px gray stroke */
+@utility text-ghost {
+  color: transparent;
+  -webkit-text-stroke: 1px var(--color-steel);
+}
+
+/* Nav links: thin underline draws in on hover/focus */
+.nav-link {
+  position: relative;
+}
+.nav-link::after {
+  content: '';
+  position: absolute;
+  left: 0;
+  bottom: -4px;
+  height: 1px;
+  width: 100%;
+  background: currentColor;
+  transform: scaleX(0);
+  transform-origin: left center;
+  transition: transform 0.3s var(--ease-out-expo);
+}
+.nav-link:hover::after,
+.nav-link:focus-visible::after {
+  transform: scaleX(1);
+}
+/* one nav item max carries the green underline */
+.nav-link-accent::after {
+  background: var(--color-accent);
+}
+
+/* Infinite marquee strip (two identical halves inside the track) */
+.marquee-track {
+  animation: marquee 56s linear infinite;
+}
+@keyframes marquee {
+  to {
+    transform: translateX(-50%);
+  }
 }
 
 /* Lenis recommendations */

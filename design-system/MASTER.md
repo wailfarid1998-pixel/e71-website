@@ -1,5 +1,21 @@
 # E71 Design System — MASTER (Source of Truth)
 
+> **v2 — "Signature" revision.** The site is 95% monochrome: near-black `#0A0B0A`,
+> off-white `#F4F4EF`, grays `#2A2A27` (hairline) / `#4A4A44` (steel/ghost stroke).
+> Green `#00B368` and red `#E4312B` are MICRO-accents only — per viewport at most:
+> the logo bars, ONE thin green keyword underline, ONE small red live dot or hover
+> state. Never as backgrounds, button fills, gradients, cards, or large surfaces.
+> Primary buttons are off-white fill with black text. Display type is **Archivo 800**,
+> huge (hero fills 60–70% viewport width), tight (leading 0.95, tracking −0.03em),
+> with outlined "ghost" type (transparent fill, 1px steel stroke) for one word per
+> headline and oversized background numerals (giant "71" bleeding off the hero).
+> Labels are IBM Plex Mono, uppercase, `//`-prefixed. The logo's diagonal cut is the
+> motion signature: diagonal clip-path wipes for the preloader (red/green/white bars,
+> <1.5s) and section/image reveals; masked word-stagger hero; ghost 71 parallaxes
+> slower than content; one pinned horizontal section; slow mono marquee divider;
+> magnetic buttons; nav underlines draw on hover (green on one item max).
+> Everything below remains for token/motion reference where not superseded.
+
 Generated with the `ui-ux-pro-max` design-system generator (product: AI platform / AI-native company;
 dials: variance 3 — centered/minimal, motion 8 — complex choreography, density 3 — spacious), then
 locked to the E71 brand brief. Brand tokens below **override** the generator's default palette/fonts.

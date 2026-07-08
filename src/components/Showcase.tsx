@@ -3,21 +3,22 @@ import { useInView } from 'motion/react'
 import { Check, CircleDashed, LoaderCircle, CornerDownLeft } from 'lucide-react'
 import { showcase } from '../content'
 import { usePrefersReducedMotion } from '../lib/motion'
-import { Reveal, SectionHeading } from './Reveal'
+import { DiagonalReveal, Reveal, SectionHeading } from './Reveal'
 
 type StepState = 'done' | 'active' | 'queued'
 
 function StepIcon({ state }: { state: StepState }) {
-  if (state === 'done') return <Check className="h-3.5 w-3.5 text-accent" aria-hidden="true" />
+  if (state === 'done') return <Check className="h-3.5 w-3.5 text-ink" aria-hidden="true" />
   if (state === 'active')
     return <LoaderCircle className="h-3.5 w-3.5 animate-spin text-ink [animation-duration:1.6s]" aria-hidden="true" />
   return <CircleDashed className="h-3.5 w-3.5 text-ink-muted/60" aria-hidden="true" />
 }
 
 /**
- * Product showcase — an animated mock of the E71 Console. The prompt types
- * itself, response lines stream in, and agent steps tick over. Runs once
- * when scrolled into view; renders the finished state under reduced motion.
+ * Product showcase — an animated mock of the E71 Console, monochrome apart
+ * from the small red live dot. The prompt types itself, response lines
+ * stream in, agent steps tick over. Runs once when scrolled into view;
+ * renders the finished state under reduced motion.
  */
 export function Showcase() {
   const reduced = usePrefersReducedMotion()
@@ -64,21 +65,21 @@ export function Showcase() {
   const streaming = doneTyping && lines < c.responseLines.length
 
   return (
-    <section id="platform" className="mx-auto w-full max-w-[1200px] px-6 py-28 md:px-8 md:py-36 lg:px-12">
+    <section id="platform" className="mx-auto w-full max-w-[1280px] px-6 py-28 md:px-8 md:py-36 lg:px-12">
       <SectionHeading eyebrow={showcase.eyebrow} headline={showcase.headline} />
       <Reveal delay={0.12}>
         <p className="mt-6 max-w-xl text-ink-muted">{showcase.subheadline}</p>
       </Reveal>
 
-      <Reveal delay={0.2} className="mt-14 md:mt-16">
+      <DiagonalReveal delay={0.15} className="mt-14 md:mt-16">
         {/* min-height reserves space so the streaming lines never shift layout */}
-        <div
-          ref={frame}
-          className="overflow-hidden rounded-xl border border-hairline bg-surface"
-        >
+        <div ref={frame} className="overflow-hidden border border-hairline bg-surface">
           {/* Window chrome */}
           <div className="flex items-center justify-between border-b border-hairline px-5 py-3">
-            <span className="label-mono text-ink-muted">{c.title}</span>
+            <span className="label-mono text-ink-muted">
+              <span aria-hidden="true">{'// '}</span>
+              {c.title}
+            </span>
             <span className="flex items-center gap-2">
               <span className="h-1.5 w-1.5 rounded-full bg-live" aria-hidden="true" />
               <span className="label-mono text-ink-muted">{c.live}</span>
@@ -93,7 +94,7 @@ export function Showcase() {
                 <p className="font-mono text-sm leading-relaxed text-ink">
                   {c.prompt.slice(0, typed)}
                   {!doneTyping && (
-                    <span className="ml-0.5 inline-block h-4 w-[7px] animate-pulse bg-accent align-middle" aria-hidden="true" />
+                    <span className="ml-0.5 inline-block h-4 w-[7px] animate-pulse bg-ink align-middle" aria-hidden="true" />
                   )}
                   {doneTyping && (
                     <CornerDownLeft className="ml-2 inline h-3.5 w-3.5 text-ink-muted/60" aria-hidden="true" />
@@ -102,11 +103,11 @@ export function Showcase() {
               </div>
 
               <div className="min-h-[7.5rem] border-t border-hairline pt-5">
-                <p className="label-mono mb-2 text-accent">E71</p>
+                <p className="label-mono mb-2 text-ink">E71</p>
                 <ul className="space-y-2.5">
                   {c.responseLines.slice(0, lines).map((line) => (
                     <li key={line} className="font-mono text-[13px] leading-relaxed text-ink-muted">
-                      <span className="mr-2 text-accent" aria-hidden="true">
+                      <span className="mr-2 text-steel" aria-hidden="true">
                         ▸
                       </span>
                       {line}
@@ -144,9 +145,7 @@ export function Showcase() {
                   return (
                     <li key={step.label} className="flex items-center gap-2.5">
                       <StepIcon state={state} />
-                      <span
-                        className={`font-mono text-xs ${state === 'queued' ? 'text-ink-muted/60' : 'text-ink'}`}
-                      >
+                      <span className={`font-mono text-xs ${state === 'queued' ? 'text-ink-muted/60' : 'text-ink'}`}>
                         {step.label}
                       </span>
                     </li>
@@ -160,7 +159,7 @@ export function Showcase() {
             {c.footnote}
           </p>
         </div>
-      </Reveal>
+      </DiagonalReveal>
     </section>
   )
 }

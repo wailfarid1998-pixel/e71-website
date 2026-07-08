@@ -1,33 +1,40 @@
-import { BrainCircuit, Workflow, Languages, ShieldCheck, type LucideIcon } from 'lucide-react'
 import { capabilities } from '../content'
-import { Reveal, SectionHeading } from './Reveal'
+import { DiagonalReveal, SectionHeading } from './Reveal'
 
-const ICONS: Record<(typeof capabilities.items)[number]['icon'], LucideIcon> = {
-  brain: BrainCircuit,
-  workflow: Workflow,
-  languages: Languages,
-  shield: ShieldCheck,
-}
-
-/** Scroll-triggered feature reveals — sequential, staggered, never all at once. */
+/**
+ * Capabilities as asymmetric editorial rows — oversized ghost numerals,
+ * hairline separators, content offset off the left edge. No card grid.
+ */
 export function Features() {
   return (
-    <section id="capabilities" className="mx-auto w-full max-w-[1200px] px-6 py-28 md:px-8 md:py-36 lg:px-12">
+    <section id="capabilities" className="mx-auto w-full max-w-[1280px] px-6 py-28 md:px-8 md:py-36 lg:px-12">
       <SectionHeading eyebrow={capabilities.eyebrow} headline={capabilities.headline} />
 
-      <ul className="mt-16 grid grid-cols-1 gap-x-12 gap-y-14 md:mt-20 md:grid-cols-2">
-        {capabilities.items.map((item, i) => {
-          const Icon = ICONS[item.icon]
-          return (
-            <Reveal as="li" key={item.title} delay={i * 0.1} className="group max-w-md">
-              <div className="flex h-10 w-10 items-center justify-center rounded-lg border border-hairline bg-surface transition-colors duration-300 group-hover:border-accent/40">
-                <Icon className="h-5 w-5 text-accent" strokeWidth={1.5} aria-hidden="true" />
+      <ul className="mt-20 md:mt-24">
+        {capabilities.items.map((item, i) => (
+          <li key={item.title} className="border-t border-hairline last:border-b">
+            <DiagonalReveal delay={0.05}>
+              <div className="grid grid-cols-12 items-baseline gap-y-4 py-10 md:py-14">
+                <span
+                  aria-hidden="true"
+                  className="col-span-3 font-display text-[clamp(3.5rem,8vw,7.5rem)] font-extrabold leading-none tracking-[-0.03em] text-ghost md:col-span-2"
+                >
+                  {item.index}
+                </span>
+                <h3
+                  className={`col-span-9 font-display text-2xl font-extrabold uppercase tracking-[-0.02em] text-ink md:col-span-4 md:text-4xl ${
+                    i % 2 === 1 ? 'md:col-start-4' : 'md:col-start-3'
+                  }`}
+                >
+                  {item.title}
+                </h3>
+                <p className="col-span-12 max-w-md text-[0.95rem] leading-relaxed text-ink-muted md:col-span-4 md:col-start-9">
+                  {item.body}
+                </p>
               </div>
-              <h3 className="mt-5 font-display text-xl font-normal text-ink">{item.title}</h3>
-              <p className="mt-3 text-[0.95rem] leading-relaxed text-ink-muted">{item.body}</p>
-            </Reveal>
-          )
-        })}
+            </DiagonalReveal>
+          </li>
+        ))}
       </ul>
     </section>
   )

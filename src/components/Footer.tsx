@@ -4,9 +4,9 @@ import { gsap, EASE, usePrefersReducedMotion } from '../lib/motion'
 import { BarsMark } from './LogoMark'
 
 /**
- * Footer — the calm close. The three-bar mark draws in one last time as it
- * scrolls into view, and the original PNG wordmark (inverted for dark)
- * anchors the brand block. Bars nudge on hover — quiet, not showy.
+ * Footer — the calm close. The three-bar mark draws in one last time, the
+ * original PNG wordmark (inverted for dark) anchors the brand block, and a
+ * ghost "71" sits quietly behind the columns.
  */
 export function Footer() {
   const reduced = usePrefersReducedMotion()
@@ -32,8 +32,15 @@ export function Footer() {
   }, [reduced])
 
   return (
-    <footer ref={root} className="border-t border-hairline">
-      <div className="mx-auto w-full max-w-[1200px] px-6 pb-12 pt-20 md:px-8 lg:px-12">
+    <footer ref={root} className="relative overflow-hidden border-t border-hairline">
+      <span
+        aria-hidden="true"
+        className="pointer-events-none absolute -bottom-[0.18em] -right-[2vw] select-none font-display text-[clamp(10rem,24vw,20rem)] font-extrabold leading-none tracking-[-0.03em] text-ghost opacity-60"
+      >
+        71
+      </span>
+
+      <div className="relative mx-auto w-full max-w-[1280px] px-6 pb-12 pt-20 md:px-8 lg:px-12">
         <div className="grid grid-cols-1 gap-14 md:grid-cols-[1.2fr_2fr]">
           {/* Brand block — inline SVG mark (animated) + original PNG wordmark */}
           <div>
@@ -53,7 +60,10 @@ export function Footer() {
           <div className="grid grid-cols-2 gap-10 sm:grid-cols-3">
             {footer.columns.map((col) => (
               <nav key={col.title} aria-label={col.title}>
-                <h3 className="label-mono text-ink-muted/70">{col.title}</h3>
+                <h3 className="label-mono text-ink-muted/70">
+                  <span aria-hidden="true">{'// '}</span>
+                  {col.title}
+                </h3>
                 <ul className="mt-5 space-y-3">
                   {col.links.map((link) => (
                     <li key={link}>

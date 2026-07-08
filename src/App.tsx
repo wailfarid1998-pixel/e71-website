@@ -3,8 +3,7 @@ import { LenisProvider } from './lib/LenisProvider'
 import { Loader } from './components/Loader'
 import { Nav } from './components/Nav'
 import { ScrollProgress } from './components/ScrollProgress'
-import { EdgeAccent } from './components/EdgeAccent'
-import { SectionDivider } from './components/SectionDivider'
+import { Marquee } from './components/Marquee'
 import { Hero } from './components/Hero'
 import { Features } from './components/Features'
 import { Process } from './components/Process'
@@ -21,18 +20,14 @@ export default function App() {
       <Loader onDone={() => setReady(true)} />
       <Nav />
       <ScrollProgress />
-      <EdgeAccent />
       <main id="main">
         <Hero ready={ready} />
-        <SectionDivider />
+        <Marquee />
         <Features />
-        <SectionDivider />
         <Process />
-        <SectionDivider />
         <Showcase />
-        <SectionDivider />
+        <Marquee />
         <Bento />
-        <SectionDivider />
         <FinalCta />
       </main>
       <Footer />

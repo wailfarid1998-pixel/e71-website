@@ -33,31 +33,33 @@ export function Nav() {
     >
       <a
         href="#main"
-        className="sr-only focus:not-sr-only focus:absolute focus:left-4 focus:top-4 focus:z-50 focus:rounded focus:bg-accent focus:px-3 focus:py-2 focus:text-sm focus:font-medium focus:text-[#0A0B0A]"
+        className="sr-only focus:not-sr-only focus:absolute focus:left-4 focus:top-4 focus:z-50 focus:rounded focus:bg-ink focus:px-3 focus:py-2 focus:text-sm focus:font-medium focus:text-[#0A0B0A]"
       >
         Skip to content
       </a>
       <nav
         aria-label="Main"
-        className="mx-auto flex h-16 w-full max-w-[1200px] items-center justify-between px-6 md:px-8 lg:px-12"
+        className="mx-auto flex h-16 w-full max-w-[1280px] items-center justify-between px-6 md:px-8 lg:px-12"
       >
         <a href="#top" aria-label="E71 — home" className="cursor-pointer">
           <Wordmark className="h-5 w-auto text-ink" />
         </a>
 
-        <div className="hidden items-center gap-8 md:flex">
+        <div className="hidden items-center gap-9 md:flex">
           {nav.links.map((l) => (
             <a
               key={l.href}
               href={l.href}
-              className="label-mono cursor-pointer text-ink-muted transition-colors duration-200 hover:text-ink"
+              className={`nav-link label-mono cursor-pointer text-ink-muted transition-colors duration-200 hover:text-ink ${
+                l.accent ? 'nav-link-accent' : ''
+              }`}
             >
-              {l.label}
+              <span aria-hidden="true" className="text-steel">{'//'}</span> {l.label}
             </a>
           ))}
           <a
             href={nav.cta.href}
-            className="cursor-pointer rounded-full bg-accent px-5 py-2 text-sm font-medium text-[#0A0B0A] transition-transform duration-200 hover:scale-[1.03] active:scale-[0.98]"
+            className="cursor-pointer rounded-full bg-ink px-5 py-2 text-sm font-medium text-[#0A0B0A] transition-transform duration-200 hover:scale-[1.03] active:scale-[0.98]"
           >
             {nav.cta.label}
           </a>
@@ -91,7 +93,7 @@ export function Nav() {
                     onClick={() => setOpen(false)}
                     className="label-mono block cursor-pointer py-3 text-ink-muted transition-colors hover:text-ink"
                   >
-                    {l.label}
+                    <span aria-hidden="true" className="text-steel">{'//'}</span> {l.label}
                   </a>
                 </li>
               ))}
@@ -99,7 +101,7 @@ export function Nav() {
             <a
               href={nav.cta.href}
               onClick={() => setOpen(false)}
-              className="mt-4 inline-block cursor-pointer rounded-full bg-accent px-6 py-3 text-sm font-medium text-[#0A0B0A]"
+              className="mt-4 inline-block cursor-pointer rounded-full bg-ink px-6 py-3 text-sm font-medium text-[#0A0B0A]"
             >
               {nav.cta.label}
             </a>

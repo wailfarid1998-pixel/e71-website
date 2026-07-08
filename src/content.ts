@@ -1,7 +1,13 @@
 /**
  * All placeholder copy for the E71 marketing site lives here.
  * Swap strings in this file — components render whatever they find.
+ *
+ * Headline word flags: `u` = the single green-underlined keyword of the
+ * section; `g` = outlined "ghost" type (transparent fill, gray stroke).
+ * Color discipline: at most one `u` per section.
  */
+
+export type HWord = { t: string; u?: boolean; g?: boolean }
 
 export const site = {
   name: 'E71',
@@ -14,7 +20,7 @@ export const site = {
 
 export const nav = {
   links: [
-    { label: 'Capabilities', href: '#capabilities' },
+    { label: 'Capabilities', href: '#capabilities', accent: true },
     { label: 'Process', href: '#process' },
     { label: 'Platform', href: '#platform' },
     { label: 'Scale', href: '#scale' },
@@ -24,8 +30,13 @@ export const nav = {
 
 export const hero = {
   eyebrow: 'E71 — Applied Intelligence',
-  // `accent` is the single green keyword for this section
-  headline: { pre: 'Machines that', accent: 'reason.', post: 'Systems that deliver.' },
+  // three lines, masked word-stagger on load; ghost + one underline
+  headline: [
+    [{ t: 'Machines' }, { t: 'that' }],
+    [{ t: 'reason.', u: true }],
+    [{ t: 'Systems' }, { t: 'that' }],
+    [{ t: 'deliver.', g: true }],
+  ] as HWord[][],
   subheadline:
     'E71 is the thinking layer for modern enterprise — models that read your operation end to end, act inside it with judgement, and compound what they learn.',
   cta: { label: 'Request early access', href: '#access' },
@@ -33,27 +44,38 @@ export const hero = {
   status: 'Systems operational',
 }
 
+export const marquee = {
+  items: [
+    'E71',
+    'Applied intelligence',
+    'Est. 1971',
+    'Abu Dhabi · London · Singapore',
+    'Sovereign AI',
+    'Reason / Act / Learn',
+  ],
+}
+
 export const capabilities = {
   eyebrow: '01 — Capabilities',
-  headline: { pre: 'Built for work that', accent: 'matters', post: '' },
+  headline: [{ t: 'Built' }, { t: 'for' }, { t: 'work' }, { t: 'that' }, { t: 'matters', u: true }] as HWord[],
   items: [
     {
-      icon: 'brain' as const,
+      index: '01',
       title: 'Deep reasoning',
       body: 'Frontier models tuned for multi-step judgement — planning, verifying, and revising before they ever act on your systems.',
     },
     {
-      icon: 'workflow' as const,
+      index: '02',
       title: 'Agentic workflows',
       body: 'Agents that execute across your tools with full audit trails — every step observable, every action reversible.',
     },
     {
-      icon: 'languages' as const,
+      index: '03',
       title: 'Multilingual by default',
       body: 'Native-grade understanding across Arabic, English and 40+ languages — built for the region, fluent everywhere.',
     },
     {
-      icon: 'shield' as const,
+      index: '04',
       title: 'Sovereign deployment',
       body: 'Run in your cloud, on your terms. Data residency, isolation and compliance are architecture, not afterthoughts.',
     },
@@ -62,7 +84,7 @@ export const capabilities = {
 
 export const process = {
   eyebrow: '02 — Process',
-  headline: { pre: 'From signal to', accent: 'outcome', post: '' },
+  headline: [{ t: 'From' }, { t: 'signal' }, { t: 'to' }, { t: 'outcome', u: true }] as HWord[],
   intro: 'One continuous loop, scrubbed by your scroll.',
   steps: [
     {
@@ -90,7 +112,7 @@ export const process = {
 
 export const showcase = {
   eyebrow: '03 — Platform',
-  headline: { pre: 'See it', accent: 'think', post: '' },
+  headline: [{ t: 'See' }, { t: 'it' }, { t: 'think', u: true }] as HWord[],
   subheadline:
     'The E71 Console — one surface to direct agents, inspect their reasoning, and sign off on what ships.',
   console: {
@@ -114,41 +136,29 @@ export const showcase = {
 
 export const stats = {
   eyebrow: '04 — Scale',
-  headline: { pre: 'Serious infrastructure,', accent: 'quiet', post: 'confidence' },
+  headline: [{ t: 'Quiet', u: true }, { t: 'confidence,' }, { t: 'serious' }, { t: 'infrastructure', g: true }] as HWord[],
   cells: [
     { value: '99.98%', label: 'Platform uptime, trailing 12 months' },
     { value: '<180ms', label: 'Median first-token latency' },
     { value: '40+', label: 'Languages with native-grade output' },
     { value: '2.1B', label: 'Agent actions executed to date' },
     { value: 'SOC 2', label: 'Type II, ISO 27001, GDPR-ready' },
-    {
-      value: 'In-region',
-      label: 'Sovereign hosting in the UAE, EU and US',
-    },
+    { value: 'In-region', label: 'Sovereign hosting in the UAE, EU and US' },
   ],
 }
 
 export const finalCta = {
   eyebrow: 'Access',
-  headline: { pre: 'Put E71 to', accent: 'work', post: '' },
+  headline: [{ t: 'Put' }, { t: 'E71' }, { t: 'to' }, { t: 'work', u: true }] as HWord[],
   body: 'We onboard a limited number of enterprise partners each quarter. Tell us about your operation and we’ll show you what it looks like with a reasoning layer.',
   cta: { label: 'Request early access', href: 'mailto:hello@e71.ai' },
 }
 
 export const footer = {
   columns: [
-    {
-      title: 'Product',
-      links: ['Platform', 'Agents', 'Security', 'Pricing'],
-    },
-    {
-      title: 'Company',
-      links: ['About', 'Careers', 'Press', 'Contact'],
-    },
-    {
-      title: 'Resources',
-      links: ['Research', 'Documentation', 'Status', 'Trust center'],
-    },
+    { title: 'Product', links: ['Platform', 'Agents', 'Security', 'Pricing'] },
+    { title: 'Company', links: ['About', 'Careers', 'Press', 'Contact'] },
+    { title: 'Resources', links: ['Research', 'Documentation', 'Status', 'Trust center'] },
   ],
   legal: '© 2026 E71 Intelligence. All rights reserved.',
   location: 'Abu Dhabi · London · Singapore',

@@ -3,8 +3,8 @@ import { usePrefersReducedMotion } from '../lib/motion'
 
 /**
  * Scroll progress as the three-bar motif: each slanted bar fills across a
- * third of the page. Fixed, tiny, and out of the way. Hidden under reduced
- * motion (it exists to visualize motion, not to convey unique info).
+ * third of the page. Monochrome — color budget stays with the logo,
+ * keyword underline, and live dot. Hidden under reduced motion.
  */
 export function ScrollProgress() {
   const reduced = usePrefersReducedMotion()
@@ -23,10 +23,7 @@ export function ScrollProgress() {
     >
       {[first, second, third].map((p, i) => (
         <div key={i} className="h-[3px] w-7 -skew-x-[30deg] overflow-hidden bg-hairline">
-          <motion.div
-            className={`h-full w-full origin-left ${i === 0 ? 'bg-accent' : 'bg-ink-muted'}`}
-            style={{ scaleX: p }}
-          />
+          <motion.div className="h-full w-full origin-left bg-ink" style={{ scaleX: p }} />
         </div>
       ))}
     </div>
