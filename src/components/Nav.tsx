@@ -1,13 +1,9 @@
 import { useEffect, useState } from 'react'
-import { AnimatePresence, motion } from 'motion/react'
-import { Menu, X } from 'lucide-react'
 import { nav } from '../content'
 import { Wordmark } from './LogoMark'
-import { usePrefersReducedMotion } from '../lib/motion'
 
+/** Minimal nav: logo + two mono links. No buttons, no menus. */
 export function Nav() {
-  const reduced = usePrefersReducedMotion()
-  const [open, setOpen] = useState(false)
   const [scrolled, setScrolled] = useState(false)
 
   useEffect(() => {
@@ -16,14 +12,6 @@ export function Nav() {
     window.addEventListener('scroll', onScroll, { passive: true })
     return () => window.removeEventListener('scroll', onScroll)
   }, [])
-
-  // Close the mobile menu on escape
-  useEffect(() => {
-    if (!open) return
-    const onKey = (e: KeyboardEvent) => e.key === 'Escape' && setOpen(false)
-    window.addEventListener('keydown', onKey)
-    return () => window.removeEventListener('keydown', onKey)
-  }, [open])
 
   return (
     <header
@@ -45,7 +33,7 @@ export function Nav() {
           <Wordmark className="h-5 w-auto text-ink" />
         </a>
 
-        <div className="hidden items-center gap-9 md:flex">
+        <div className="flex items-center gap-7 md:gap-9">
           {nav.links.map((l) => (
             <a
               key={l.href}
@@ -57,57 +45,8 @@ export function Nav() {
               <span aria-hidden="true" className="text-steel">{'//'}</span> {l.label}
             </a>
           ))}
-          <a
-            href={nav.cta.href}
-            className="cursor-pointer rounded-full bg-ink px-5 py-2 text-sm font-medium text-[#0A0B0A] transition-transform duration-200 hover:scale-[1.03] active:scale-[0.98]"
-          >
-            {nav.cta.label}
-          </a>
         </div>
-
-        <button
-          type="button"
-          aria-label={open ? 'Close menu' : 'Open menu'}
-          aria-expanded={open}
-          onClick={() => setOpen((v) => !v)}
-          className="cursor-pointer p-2 text-ink md:hidden"
-        >
-          {open ? <X className="h-5 w-5" aria-hidden="true" /> : <Menu className="h-5 w-5" aria-hidden="true" />}
-        </button>
       </nav>
-
-      <AnimatePresence>
-        {open && (
-          <motion.div
-            initial={reduced ? false : { opacity: 0, y: -8 }}
-            animate={{ opacity: 1, y: 0 }}
-            exit={reduced ? undefined : { opacity: 0, y: -8 }}
-            transition={{ duration: 0.25, ease: 'easeOut' }}
-            className="border-t border-hairline bg-base/95 px-6 pb-8 pt-4 backdrop-blur-md md:hidden"
-          >
-            <ul className="flex flex-col gap-1">
-              {nav.links.map((l) => (
-                <li key={l.href}>
-                  <a
-                    href={l.href}
-                    onClick={() => setOpen(false)}
-                    className="label-mono block cursor-pointer py-3 text-ink-muted transition-colors hover:text-ink"
-                  >
-                    <span aria-hidden="true" className="text-steel">{'//'}</span> {l.label}
-                  </a>
-                </li>
-              ))}
-            </ul>
-            <a
-              href={nav.cta.href}
-              onClick={() => setOpen(false)}
-              className="mt-4 inline-block cursor-pointer rounded-full bg-ink px-6 py-3 text-sm font-medium text-[#0A0B0A]"
-            >
-              {nav.cta.label}
-            </a>
-          </motion.div>
-        )}
-      </AnimatePresence>
     </header>
   )
 }

@@ -61,7 +61,7 @@ export function Loader({ onDone }: { onDone: () => void }) {
           <path className="loader-bar" d="M15 18 H65 L56 30 H6 Z" fill="#00B368" />
           <path className="loader-bar" d="M15 36 H66 L57 48 H6 Z" fill="#F4F4EF" />
         </svg>
-        <span className="loader-num font-[300] font-['Space_Grotesk'] text-4xl leading-none tracking-widest text-ink">
+        <span className="loader-num font-display text-4xl font-extrabold leading-none tracking-[-0.03em] text-ink">
           71
         </span>
       </div>

@@ -6,9 +6,10 @@ type BarsProps = {
 }
 
 /**
- * The E71 three-bar motif — three right-leaning parallelograms forming a
- * stylized "E". Recreated as inline SVG (crisp scaling + animatable bars).
- * Each bar carries the `e71-bar` class so GSAP/Motion can stagger them.
+ * The E71 three-bar mark — three parallelograms with the diagonal cut,
+ * forming an abstract "E". Inline SVG stand-in matching the brand mark;
+ * swap for the provided icon SVG file as-is when supplied. Each bar
+ * carries the `e71-bar` class so GSAP can stagger them.
  */
 export function BarsMark({ className, accentTop = true, barClassName = '' }: BarsProps) {
   return (
@@ -30,10 +31,10 @@ type WordmarkProps = {
   title?: string
 }
 
-/** Full E71 wordmark: bars + a thin "71" set in the display font. */
+/** Full E71 wordmark: bars + "71" in Archivo 800. */
 export function Wordmark({ className, accentTop = true, title = 'E71' }: WordmarkProps) {
   return (
-    <svg viewBox="0 0 162 52" role="img" aria-label={title} className={className} fill="currentColor">
+    <svg viewBox="0 0 176 52" role="img" aria-label={title} className={className} fill="currentColor">
       <path
         className="e71-bar"
         d="M15 0 H61 L52 12 H6 Z"
@@ -44,10 +45,10 @@ export function Wordmark({ className, accentTop = true, title = 'E71' }: Wordmar
       <text
         x="80"
         y="49"
-        fontFamily="'Space Grotesk', sans-serif"
-        fontWeight="300"
-        fontSize="64"
-        letterSpacing="2"
+        fontFamily="'Archivo', sans-serif"
+        fontWeight="800"
+        fontSize="60"
+        letterSpacing="-1"
       >
         71
       </text>

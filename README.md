@@ -1,10 +1,9 @@
-# E71 — Marketing Site
+# E71 — Presence Site
 
-Dark-first marketing website for E71, an AI-native company. Built to the
-[`design-system/MASTER.md`](design-system/MASTER.md) generated with the
-**ui-ux-pro-max** skill (styles: Motion-Driven, Kinetic Typography, Parallax
-Storytelling, AI-Native UI, Minimalism & Swiss Style), locked to the E71
-brand palette ("Union" — UAE-flag-derived green/red over near-black).
+Single-page portfolio/brochure site for E71, an AI company from the UAE.
+Not a product site — six choreographed moments, under 150 words of copy,
+95% monochrome with micro-accents. Reference standard: Awwwards/CSSDA
+"animated" gallery winners.
 
 ## Run it
 
@@ -19,32 +18,37 @@ npm run preview   # serve the production build
 
 - React 19 + Vite + TypeScript
 - Tailwind CSS v4 (tokens in `src/index.css` `@theme`)
-- GSAP + ScrollTrigger — scroll-scrubbed motion, the pinned horizontal section
-- Motion (`motion/react`) — component animation and reveals
+- GSAP + ScrollTrigger — pinned, scroll-scrubbed choreography
 - Lenis — smooth inertial scrolling (wired into GSAP's ticker)
-- Lucide — SVG icons
+- Motion (`motion/react`) — micro-interactions and reveals
+
+## The six moments
+
+1. **Preloader** — three logo bars wipe in diagonally (red, green, white), diagonal clip reveal, ≈1.4s
+2. **Hero** — massive Archivo headline, masked word stagger, green underline draws last, giant ghost "71" parallaxes slower than content
+3. **Marquee** — slow infinite mono strip (the seven emirates)
+4. **About** — pinned manifesto; statements swap on scroll, key words reveal with the diagonal wipe
+5. **Quote** — full-viewport Sheikh Zayed quote, words scrubbed to scroll, green rule + mono attribution land last
+6. **Contact** — enormous "Let's talk.", scramble-decode mailto link, minimal footer
 
 ## Where things live
 
 | Path | What |
 |------|------|
-| `src/content.ts` | **All placeholder copy** — edit text here only |
-| `src/index.css` | Brand tokens (colors, fonts, utilities) |
+| `src/content.ts` | **Every word on the site** (< 150 total) — edit here only |
+| `src/index.css` | Brand tokens (colors, fonts, cursor, marquee) |
 | `design-system/MASTER.md` | Design-system source of truth |
-| `src/components/LogoMark.tsx` | Inline-SVG three-bar mark + wordmark (animatable) |
-| `public/e71-logo.png` | Original wordmark PNG (trimmed + optimized, true alpha) |
-| `src/lib/motion.ts` | GSAP/ScrollTrigger setup + `usePrefersReducedMotion` |
-| `src/lib/LenisProvider.tsx` | Smooth scroll, disabled under reduced motion |
+| `src/components/LogoMark.tsx` | Inline-SVG logo stand-in — swap in provided SVG files as-is |
+| `src/lib/motion.ts` | GSAP setup + `usePrefersReducedMotion` |
 
-## Motion & accessibility notes
+## Notes
 
-- Every animation — loader, kinetic hero, scroll reveals, the pinned
-  horizontal section, console mock, magnetic CTA, Lenis itself — is gated
-  behind `prefers-reduced-motion`; reduced users get static, fully-visible
-  content and native scrolling.
-- One pinned section only (skill rule), scrub `1`, with a vertical fallback
-  below `lg` viewports.
-- The red accent is decorative-only (live dot with text label, left-edge
-  hoist band); green is the single functional accent.
-- Verified at 375 / 768 / 1024 / 1440 with no horizontal overflow; animated
-  containers are pre-sized to keep CLS low.
+- The meaning of the name is never explained anywhere on the site — keep it that way.
+- Color discipline: max 3 small color moments per viewport (logo bars, one green
+  underline, one red live dot). No green/red surfaces or button fills, ever.
+- The Arabic line of the quote renders only if supplied in `content.ts`
+  (`quote.arabic`) — never generate it.
+- Every animation (preloader, pins, scrubs, cursor, marquee, scramble, Lenis)
+  gates on `prefers-reduced-motion`; reduced users get a fully static page.
+- Custom cursor is desktop-only (`pointer: fine`), hidden until first mousemove.
+- Verified at 375 / 768 / 1440; horizontal viewport scroll is locked.

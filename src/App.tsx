@@ -1,16 +1,17 @@
 import { useState } from 'react'
 import { LenisProvider } from './lib/LenisProvider'
 import { Loader } from './components/Loader'
+import { Cursor } from './components/Cursor'
 import { Nav } from './components/Nav'
-import { ScrollProgress } from './components/ScrollProgress'
-import { Marquee } from './components/Marquee'
 import { Hero } from './components/Hero'
-import { Features } from './components/Features'
-import { Process } from './components/Process'
-import { Showcase } from './components/Showcase'
-import { Bento } from './components/Bento'
-import { FinalCta } from './components/FinalCta'
-import { Footer } from './components/Footer'
+import { Marquee } from './components/Marquee'
+import { Manifesto } from './components/Manifesto'
+import { Quote } from './components/Quote'
+import { Contact } from './components/Contact'
+
+/** Film grain as an inline SVG data-URI — no network request, GPU-cheap. */
+const GRAIN =
+  "url(\"data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='160' height='160'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='2'/%3E%3C/filter%3E%3Crect width='160' height='160' filter='url(%23n)' opacity='0.5'/%3E%3C/svg%3E\")"
 
 export default function App() {
   const [ready, setReady] = useState(false)
@@ -18,19 +19,21 @@ export default function App() {
   return (
     <LenisProvider>
       <Loader onDone={() => setReady(true)} />
+      <Cursor />
       <Nav />
-      <ScrollProgress />
+      {/* Grain overlay so the black never feels flat */}
+      <div
+        aria-hidden="true"
+        className="pointer-events-none fixed inset-0 z-[80] opacity-[0.05] mix-blend-overlay"
+        style={{ backgroundImage: GRAIN }}
+      />
       <main id="main">
         <Hero ready={ready} />
         <Marquee />
-        <Features />
-        <Process />
-        <Showcase />
-        <Marquee />
-        <Bento />
-        <FinalCta />
+        <Manifesto />
+        <Quote />
+        <Contact />
       </main>
-      <Footer />
     </LenisProvider>
   )
 }
