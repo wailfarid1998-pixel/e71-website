@@ -1,0 +1,71 @@
+@import 'tailwindcss';
+
+@theme {
+  --color-base: #0a0b0a;
+  --color-surface: #16181a;
+  --color-hairline: #1e201e;
+  --color-ink: #f4f4ef;
+  --color-ink-muted: #9aa097;
+  --color-accent: #00b368;
+  --color-live: #d8352a;
+
+  --font-display: 'Space Grotesk', ui-sans-serif, system-ui, sans-serif;
+  --font-sans: 'Inter', ui-sans-serif, system-ui, sans-serif;
+  --font-mono: 'IBM Plex Mono', ui-monospace, monospace;
+
+  --ease-out-expo: cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+html {
+  background-color: var(--color-base);
+  color-scheme: dark;
+  /* keep anchor targets clear of the fixed nav */
+  scroll-padding-top: 5rem;
+}
+
+body {
+  @apply bg-base text-ink font-sans antialiased;
+  font-size: 16px;
+  line-height: 1.6;
+  overflow-x: clip;
+}
+
+::selection {
+  background: var(--color-accent);
+  color: var(--color-base);
+}
+
+/* Visible focus for keyboard users — never removed, only styled */
+:focus-visible {
+  outline: 2px solid var(--color-accent);
+  outline-offset: 3px;
+  border-radius: 2px;
+}
+
+/* Technical label utility — mono, uppercase, tracked */
+@utility label-mono {
+  font-family: var(--font-mono);
+  font-size: 0.75rem;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+}
+
+/* Lenis recommendations */
+html.lenis,
+html.lenis body {
+  height: auto;
+}
+.lenis.lenis-smooth {
+  scroll-behavior: auto !important;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+}
